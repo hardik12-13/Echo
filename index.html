@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#ffffff">
+  <title>ECHO AI</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; font-family: Arial, sans-serif;
+      background: #fff; color: #171717;
+    }
+    header {
+      height: 64px; display: flex; align-items: center;
+      padding: 0 18px; border-bottom: 1px solid #eee;
+      gap: 12px;
+    }
+    .logo {
+      background: #171717; color: white; border-radius: 12px;
+      padding: 9px 11px; font-weight: bold;
+    }
+    header h2 { font-size: 20px; margin: 0; }
+    .layout { display: flex; height: calc(100dvh - 64px); }
+    aside {
+      width: 245px; padding: 18px 12px;
+      border-right: 1px solid #eee;
+    }
+    button { cursor: pointer; font: inherit; }
+    .nav {
+      display: block; width: 100%; text-align: left;
+      padding: 13px; border: 0; border-radius: 12px;
+      background: white; margin-bottom: 5px;
+    }
+    .nav:hover { background: #f4f4f5; }
+    .note { color: #777; font-size: 12px; padding: 12px; }
+    main {
+      flex: 1; min-width: 0; display: flex;
+      flex-direction: column; align-items: center;
+      padding: 24px 16px;
+    }
+    #messages {
+      width: 100%; max-width: 760px; flex: 1;
+      overflow-y: auto; padding-bottom: 20px;
+    }
+    .welcome { text-align: center; margin: 15vh auto 25px; }
+    .welcome h1 { font-size: clamp(27px, 5vw, 40px); }
+    .welcome p { color: #777; }
+    .message {
+      white-space: pre-wrap; line-height: 1.6;
+      padding: 14px 16px; border-radius: 16px;
+      margin: 12px 0; overflow-wrap: anywhere;
+    }
+    .user { background: #f2f2f2; margin-left: 12%; }
+    .assistant { background: #fff; }
+    .composer {
+      width: 100%; max-width: 760px;
+      border: 1px solid #ddd; border-radius: 22px;
+      padding: 10px; box-shadow: 0 3px 18px #00000008;
+    }
+    textarea {
+      width: 100%; resize: none; border: 0; outline: 0;
+      padding: 10px; font: inherit; min-height: 48px;
+    }
+    .bottom { display: flex; justify-content: space-between; align-items: center; }
+    .send {
+      background: #171717; color: white; border: 0;
+      padding: 10px 17px; border-radius: 14px;
+    }
+    .disclaimer { font-size: 11px; color: #888; text-align: center; margin-top: 10px; }
+    @media(max-width:600px) {
+      aside { width: 58px; padding: 12px 5px; }
+      .nav { text-align: center; padding: 12px 2px; font-size: 12px; }
+      .nav span { display: none; }
+      .note { display: none; }
+      main { padding: 15px 10px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">E</div>
+    <h2>ECHO AI</h2>
+  </header>
+
+  <div class="layout">
+    <aside>
+      <button class="nav" onclick="newChat()">＋ <span>New chat</span></button>
+      <button class="nav" onclick="showNotice('Search will be added in a later step.')">⌕ <span>Search</span></button>
+      <button class="nav" onclick="showNotice('Your library will be added in a later step.')">▤ <span>Library</span></button>
+      <button class="nav" onclick="showNotice('Projects will be added in a later step.')">▧ <span>Projects</span></button>
+      <p class="note">WATCH. CREATE. CONNECT.</p>
+    </aside>
+
+    <main>
+      <div id="messages">
+        <div class="welcome" id="welcome">
+          <h1>What can I help you with?</h1>
+          <p>Welcome to ECHO AI</p>
+        </div>
+      </div>
+
+      <div class="composer">
+        <textarea id="prompt" placeholder="Ask ECHO anything..." rows="2"></textarea>
+        <div class="bottom">
+          <span style="font-size:12px;color:#777">AI connection coming next</span>
+          <button class="send" onclick="sendMessage()">↑ Send</button>
+        </div>
+      </div>
+      <div class="disclaimer">ECHO AI is under development. AI responses are not connected yet.</div>
+    </main>
+  </div>
+
+  <script>
+    const input = document.getElementById('prompt');
+    const messages = document.getElementById('messages');
+
+    function addMessage(text, type) {
+      const welcome = document.getElementById('welcome');
+      if (welcome) welcome.remove();
+
+      const div = document.createElement('div');
+      div.className = 'message ' + type;
+      div.textContent = text;
+      messages.appendChild(div);
+      messages.scrollTop = messages.scrollHeight;
+    }
+
+    function sendMessage() {
+      const text = input.value.trim();
+      if (!text) return;
+      addMessage(text, 'user');
+      addMessage(
+        'The AI model is not connected yet. We will connect a real AI service in a later step.',
+        'assistant'
+      );
+      input.value = '';
+    }
+
+    function newChat() {
+      messages.innerHTML = '<div class="welcome" id="welcome"><h1>What can I help you with?</h1><p>Welcome to ECHO AI</p></div>';
+    }
+
+    function showNotice(text) {
+      alert(text);
+    }
+
+    input.addEventListener('keydown', function(event) {
+      if (event.key === 'Enter' && !event.shiftKey) {
+        event.preventDefault();
+        sendMessage();
+      }
+    });
+  </script>
+</body>
+</html>
